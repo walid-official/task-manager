@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import { MdDelete, MdEdit } from "react-icons/md";
+import UpdateModal from "../UpdateModal/UpdateModal";
 
 const Tasks = () => {
   const [toDoTasks, setToDoTasks] = useState([]);
   const [inProgressTasks, setInProgressTasks] = useState([]);
   const [doneTasks, setDoneTasks] = useState([]);
+  const [singleTasks, setSingleTasks] = useState([]);
 
   useEffect(() => {
     fetchTasks("To Do", setToDoTasks);
@@ -22,6 +24,26 @@ const Tasks = () => {
       setTasks(data);
     } catch (error) {
       console.error(`Error fetching ${category} tasks:`, error);
+    }
+  };
+
+  const handleUpdateTaskModal = async (singleTaskId) => {
+    document.getElementById("my_modal_2").showModal();
+    try {
+      const response = await fetch(
+        `http://localhost:5000/singleTasks/${singleTaskId}`,
+        {
+          method: "GET",
+        }
+      );
+      const data = await response.json(); // ✅ Parse the response
+      const taskSingleData = {
+        ...data,
+        singleTaskId,
+      };
+      setSingleTasks(taskSingleData); // Now set the task data correctly
+    } catch (err) {
+      console.log("Error fetching single task:", err);
     }
   };
 
@@ -123,7 +145,10 @@ const Tasks = () => {
                       </p>
                     </div>
                     <div className="space-x-3">
-                      <button className="text-xl cursor-pointer">
+                      <button
+                        onClick={() => handleUpdateTaskModal(task._id)}
+                        className="text-xl cursor-pointer"
+                      >
                         <MdEdit />
                       </button>
                       <button
@@ -154,6 +179,7 @@ const Tasks = () => {
           {renderTaskList(doneTasks, "Done")}
         </div>
       </DragDropContext>
+      <UpdateModal singleTasks={singleTasks}></UpdateModal>
     </div>
   );
 };
