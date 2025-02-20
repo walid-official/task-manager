@@ -2,7 +2,7 @@ import React, { useEffect, useState, forwardRef, useImperativeHandle, useContext
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import { MdDelete, MdEdit } from "react-icons/md";
 import UpdateModal from "../UpdateModal/UpdateModal";
-import { AuthContext } from "../Authprovider/Authprovider";
+import { AuthContext } from "../AuthProvider/AuthProvider";
 
 const Tasks = forwardRef((props, ref) => {
   const [toDoTasks, setToDoTasks] = useState([]);
