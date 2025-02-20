@@ -1,12 +1,15 @@
+import { useContext } from "react";
 import { useForm } from "react-hook-form";
+import { AuthContext } from "../Authprovider/Authprovider";
 
 const AddTaskModal = ({ refetchTasks }) => {
   const { register, handleSubmit, reset, formState: { errors } } = useForm();
-
+  const {user} = useContext(AuthContext)
   const onSubmit = async (data) => {
     const taskData = {
       ...data,
       timestamp: new Date().toISOString(),
+      email: user?.email
     };
 
     try {

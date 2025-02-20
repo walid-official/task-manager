@@ -1,11 +1,20 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { NavLink, useNavigate } from "react-router";
 import { AuthContext } from "../Authprovider/Authprovider";
+import { FaBars, FaTimes } from "react-icons/fa";
 import axios from "axios";
 
 const Navbar = () => {
   const { user, signInWithGoogle, userSignOut } = useContext(AuthContext);
   const navigate = useNavigate();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  // 🔄 Toggle mobile menu
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
+  // 🟢 Google Login Handler
   const handleGoogleLogin = () => {
     signInWithGoogle()
       .then((result) => {
@@ -17,8 +26,9 @@ const Navbar = () => {
           name: result?.user?.displayName,
         };
         try {
-          const { data } = axios.post("http://localhost:5000/users", userData);
-          console.log(data);
+          axios.post("http://localhost:5000/users", userData).then(({ data }) => {
+            console.log(data);
+          });
         } catch (err) {
           console.log(err);
         }
@@ -28,50 +38,59 @@ const Navbar = () => {
       });
   };
 
+  // 🔴 Logout Handler
   const handleSignOut = () => {
     userSignOut()
-      .then((result) => {
-        console.log(result);
+      .then(() => {
         navigate("/");
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => console.log(err));
   };
 
+  // 📋 Navigation Links
   const Links = (
     <>
-      <NavLink to="/hero" className="font-semibold">
+      <NavLink to="/hero" className="font-semibold" onClick={() => setIsMenuOpen(false)}>
         Home
       </NavLink>
       {user && (
-        <NavLink to="/add-task" className="font-semibold">
+        <NavLink to="/add-task" className="font-semibold" onClick={() => setIsMenuOpen(false)}>
           Add Task
         </NavLink>
       )}
       {user ? (
-        <NavLink onClick={handleSignOut} className="btn">
+        <button onClick={handleSignOut} className="btn">
           Logout
-        </NavLink>
+        </button>
       ) : (
-        <NavLink onClick={handleGoogleLogin} className="btn">
+        <button onClick={handleGoogleLogin} className="btn">
           Google Login
-        </NavLink>
+        </button>
       )}
     </>
   );
+
   return (
-    <div className="bg-gray-200 px-24">
-      <div className="navbar">
-        <div className="flex-1">
-          <h2 className="text-2xl font-bold">PlanPilot</h2>
-        </div>
-        <div className="flex-none">
-          <ul className="menu menu-horizontal space-x-4 items-center px-1">
-            {Links}
-          </ul>
+    <div className="bg-gray-200 lg:px-24 px-10 shadow-md">
+      <div className="navbar flex justify-between items-center py-4">
+        {/* 🚀 Logo */}
+        <h2 className="text-2xl font-bold">PlanMate Pro</h2>
+
+        {/* 🖥️ Desktop Menu */}
+        <div className="hidden lg:flex space-x-6 items-center">{Links}</div>
+
+        {/* 📱 Mobile Toggle */}
+        <div className="lg:hidden text-2xl cursor-pointer" onClick={toggleMenu}>
+          {isMenuOpen ? <FaTimes /> : <FaBars />}
         </div>
       </div>
+
+      {/* 📲 Mobile Menu Dropdown */}
+      {isMenuOpen && (
+        <div className="lg:hidden bg-gray-100 rounded-md shadow-md py-4 space-y-4 px-6">
+          {Links}
+        </div>
+      )}
     </div>
   );
 };

@@ -2,10 +2,10 @@ import React from "react";
 
 const Hero = () => {
   return (
-    <div className="bg-base-200 px-24">
-      <div className="flex justify-between items-center  min-h-screen">
-        <div className="w-[50%]">
-          <div className="text-center lg:text-left">
+    <div className="bg-base-200 lg:px-24 px-10">
+      <div className="lg:flex justify-between items-center  min-h-screen">
+        <div className="lg:w-[50%]">
+          <div className="text-center pt-8 lg:pt-0 lg:text-left">
             <h1 className="text-5xl font-bold">PlanMate Pro</h1>
             <p className="py-6">
               PlanMate Pro is a sleek and intuitive task management app designed
@@ -16,9 +16,9 @@ const Hero = () => {
             </p>
           </div>
         </div>
-        <div className="w-[50%] flex justify-end">
+        <div className="lg:w-[50%] flex lg:justify-end justify-center">
           <img
-            className="w-[70%] "
+            className="md:w-[70%] w-full"
             src="https://cdn3d.iconscout.com/3d/premium/thumb/organizing-project-3d-illustration-download-in-png-blend-fbx-gltf-file-formats--business-management-task-work-schedule-organising-pack-illustrations-10137608.png?f=webp"
             alt=""
           />

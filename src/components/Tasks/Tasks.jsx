@@ -1,18 +1,19 @@
-import React, { useEffect, useState, forwardRef, useImperativeHandle } from "react";
+import React, { useEffect, useState, forwardRef, useImperativeHandle, useContext } from "react";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import { MdDelete, MdEdit } from "react-icons/md";
 import UpdateModal from "../UpdateModal/UpdateModal";
+import { AuthContext } from "../Authprovider/Authprovider";
 
 const Tasks = forwardRef((props, ref) => {
   const [toDoTasks, setToDoTasks] = useState([]);
   const [inProgressTasks, setInProgressTasks] = useState([]);
   const [doneTasks, setDoneTasks] = useState([]);
   const [singleTasks, setSingleTasks] = useState([]);
-
+  const {user} = useContext(AuthContext)
   // Fetch tasks based on category
   const fetchTasks = async (category, setTasks) => {
     try {
-      const response = await fetch(`http://localhost:5000/categoryTasks?category=${encodeURIComponent(category)}`);
+      const response = await fetch(`http://localhost:5000/categoryTasks?category=${encodeURIComponent(category)}&email=${user?.email}`);
       const data = await response.json();
       setTasks(data);
     } catch (error) {
