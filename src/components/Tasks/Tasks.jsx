@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
+import { MdDelete, MdEdit } from "react-icons/md";
 
 const Tasks = () => {
   const [toDoTasks, setToDoTasks] = useState([]);
@@ -24,51 +25,7 @@ const Tasks = () => {
     }
   };
 
-  // Handle Drag and Drop
-  const onDragEnd = (result) => {
-    const { source, destination } = result;
-
-    // If dropped outside any list
-    if (!destination) return;
-
-    // If dropped in the same place
-    if (
-      source.droppableId === destination.droppableId &&
-      source.index === destination.index
-    ) {
-      return;
-    }
-
-    // Mapping list names to state
-    const lists = {
-      "To Do": { tasks: toDoTasks, setTasks: setToDoTasks },
-      "In Progress": { tasks: inProgressTasks, setTasks: setInProgressTasks },
-      "Done": { tasks: doneTasks, setTasks: setDoneTasks },
-    };
-
-    // Source and destination lists
-    const sourceList = lists[source.droppableId];
-    const destList = lists[destination.droppableId];
-
-    // Remove from source
-    const [movedTask] = sourceList.tasks.splice(source.index, 1);
-
-    // Update category if moved to another list
-    if (source.droppableId !== destination.droppableId) {
-      movedTask.category = destination.droppableId;
-      // Optional: update on server
-      updateTaskCategory(movedTask._id, destination.droppableId);
-    }
-
-    // Add to destination
-    destList.tasks.splice(destination.index, 0, movedTask);
-
-    // Update states
-    sourceList.setTasks([...sourceList.tasks]);
-    destList.setTasks([...destList.tasks]);
-  };
-
-  // Function to update task category on backend
+  // 🟢 Update Task Category (Drag & Drop)
   const updateTaskCategory = async (taskId, newCategory) => {
     try {
       await fetch(`http://localhost:5000/tasks/${taskId}`, {
@@ -81,14 +38,70 @@ const Tasks = () => {
     }
   };
 
-  // Reusable function to render task lists
+  // ❌ Delete Task
+  const deleteTask = async (taskId, category) => {
+    try {
+      await fetch(`http://localhost:5000/tasks/${taskId}`, {
+        method: "DELETE",
+      });
+
+      // Remove from UI after deletion
+      const listMap = {
+        "To Do": [toDoTasks, setToDoTasks],
+        "In Progress": [inProgressTasks, setInProgressTasks],
+        Done: [doneTasks, setDoneTasks],
+      };
+
+      const [tasks, setTasks] = listMap[category];
+      setTasks(tasks.filter((task) => task._id !== taskId));
+    } catch (error) {
+      console.error("Error deleting task:", error);
+    }
+  };
+
+  // 🔄 Handle Drag and Drop
+  const onDragEnd = (result) => {
+    const { source, destination } = result;
+
+    if (!destination) return;
+
+    if (
+      source.droppableId === destination.droppableId &&
+      source.index === destination.index
+    ) {
+      return;
+    }
+
+    const lists = {
+      "To Do": { tasks: toDoTasks, setTasks: setToDoTasks },
+      "In Progress": { tasks: inProgressTasks, setTasks: setInProgressTasks },
+      Done: { tasks: doneTasks, setTasks: setDoneTasks },
+    };
+
+    const sourceList = lists[source.droppableId];
+    const destList = lists[destination.droppableId];
+
+    const [movedTask] = sourceList.tasks.splice(source.index, 1);
+
+    if (source.droppableId !== destination.droppableId) {
+      movedTask.category = destination.droppableId;
+      updateTaskCategory(movedTask._id, destination.droppableId);
+    }
+
+    destList.tasks.splice(destination.index, 0, movedTask);
+
+    sourceList.setTasks([...sourceList.tasks]);
+    destList.setTasks([...destList.tasks]);
+  };
+
+  // 🎨 Reusable Task List Renderer
   const renderTaskList = (tasks, title) => (
     <Droppable droppableId={title}>
       {(provided) => (
         <div
           ref={provided.innerRef}
           {...provided.droppableProps}
-          className="bg-gray-200 w-[30%] min-h-[400px] p-4 rounded-lg"
+          className="bg-gray-200 min-h-[400px] p-4 rounded-lg"
         >
           <div className="font-bold text-center text-3xl py-2">{title}</div>
           {tasks.map((task, index) => (
@@ -102,11 +115,24 @@ const Tasks = () => {
                     snapshot.isDragging ? "bg-blue-100" : ""
                   }`}
                 >
-                  <div className="flex gap-3.5 items-center">
-                    <h2 className="text-xl font-semibold">{task.title}</h2>
-                    <p className="text-sm text-gray-500">
-                      {new Date(task.timestamp).toLocaleString()}
-                    </p>
+                  <div className="flex justify-between items-center">
+                    <div className="flex gap-3.5 items-center">
+                      <h2 className="text-xl font-semibold">{task.title}</h2>
+                      <p className="text-sm text-gray-500">
+                        {new Date(task.timestamp).toLocaleString()}
+                      </p>
+                    </div>
+                    <div className="space-x-3">
+                      <button className="text-xl cursor-pointer">
+                        <MdEdit />
+                      </button>
+                      <button
+                        className="text-xl cursor-pointer text-red-500"
+                        onClick={() => deleteTask(task._id, task.category)}
+                      >
+                        <MdDelete />
+                      </button>
+                    </div>
                   </div>
                   <p className="py-2">{task.description}</p>
                 </div>
@@ -122,7 +148,7 @@ const Tasks = () => {
   return (
     <div className="w-11/12 mx-auto">
       <DragDropContext onDragEnd={onDragEnd}>
-        <div className="flex justify-between gap-5">
+        <div className="grid md:grid-cols-2 gap-6">
           {renderTaskList(toDoTasks, "To Do")}
           {renderTaskList(inProgressTasks, "In Progress")}
           {renderTaskList(doneTasks, "Done")}
