@@ -1,20 +1,28 @@
-import React, { useEffect, useState } from "react";
-import { Link, NavLink } from "react-router";
+import React, { useContext, useEffect, useState } from "react";
+import { Link, NavLink, useNavigate } from "react-router";
 import { auth } from "../../firebase/firebase.init";
-import {
-  GoogleAuthProvider,
-  onAuthStateChanged,
-  signInWithPopup,
-  signOut,
-} from "firebase/auth";
+import { AuthContext } from "../Authprovider/Authprovider";
+import axios from "axios";
 
 const Navbar = () => {
-  const provider = new GoogleAuthProvider();
-  const [user, setUser] = useState(null);
+  const { user, signInWithGoogle, userSignOut } = useContext(AuthContext);
+  const navigate = useNavigate();
   const handleGoogleLogin = () => {
-    signInWithPopup(auth, provider)
+    signInWithGoogle()
       .then((result) => {
         console.log(result);
+        navigate("/add-task");
+        const userData = {
+          userId: result?.user?.uid,
+          email: result?.user?.email,
+          name: result?.user?.displayName,
+        };
+        try {
+          const { data } = axios.post("http://localhost:5000/users", userData);
+          console.log(data);
+        } catch (err) {
+          console.log(err);
+        }
       })
       .catch((error) => {
         console.log(error);
@@ -22,29 +30,15 @@ const Navbar = () => {
   };
 
   const handleSignOut = () => {
-    signOut(auth)
+    userSignOut()
       .then((result) => {
         console.log(result);
+        navigate("/");
       })
       .catch((err) => {
         console.log(err);
       });
   };
-
-  useEffect(() => {
-    const unSubscribe = onAuthStateChanged(auth, (currentUser) => {
-      console.log("currently Logged user", currentUser);
-      setUser(currentUser);
-      if (currentUser) {
-        setUser(currentUser);
-      } else {
-        setUser(null);
-      }
-    });
-    return () => {
-      unSubscribe();
-    };
-  }, []);
 
   const Links = (
     <>
