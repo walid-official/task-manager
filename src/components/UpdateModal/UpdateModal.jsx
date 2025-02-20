@@ -1,74 +1,88 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
-const UpdateModal = ({ singleTasks }) => {
-  console.log(singleTasks);
+const UpdateModal = ({ singleTasks, refetchTasks }) => {
   const [category, setCategory] = useState(singleTasks.category || "");
+  const [title, setTitle] = useState(singleTasks.title || "");
+  const [description, setDescription] = useState(singleTasks.description || "");
+
+  // 🟢 Update local state if singleTasks changes
+  useEffect(() => {
+    setCategory(singleTasks.category || "");
+    setTitle(singleTasks.title || "");
+    setDescription(singleTasks.description || "");
+  }, [singleTasks]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const form = e.target;
-    const title = form.title.value;
-    const description = form.description.value;
 
     const updateData = {
-      title: title,
-      description: description,
+      title,
+      description,
       category: category !== "" ? category : singleTasks.category, // ✅ Conditional check
     };
 
-    console.log(updateData);
-    console.log(singleTasks.singleTaskId);
+    try {
+      const { data } = await axios.patch(
+        `http://localhost:5000/updateTasks/${singleTasks.singleTaskId}`,
+        updateData
+      );
+      console.log("✅ Task updated:", data);
 
+      // 🔄 Refetch tasks to reflect the changes
+      refetchTasks();
 
-  try {
-    const { data } = await axios.patch(
-      `http://localhost:5000/updateTasks/${singleTasks.singleTaskId}`,
-      updateData
-    );
-    console.log(data);
-  } catch (err) {
-    console.log(err);
-  }
-
-
-
+      // ❌ Close the modal after successful update
+      document.getElementById("my_modal_2").close();
+    } catch (err) {
+      console.error("❌ Error updating task:", err);
+    }
   };
 
   return (
     <div>
       <dialog id="my_modal_2" className="modal">
         <div className="modal-box">
+          <h2 className="text-xl font-bold text-center mb-4">Update Task</h2>
+
           <div className="card">
             <form onSubmit={handleSubmit} className="card-body">
+              {/* Title Input */}
               <div className="form-control">
-                <div className="py-2">Title</div>
+                <div className="py-2 font-semibold">Title</div>
                 <input
                   type="text"
                   placeholder="Title"
-                  defaultValue={singleTasks.title}
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
                   className="input input-bordered"
                   name="title"
+                  required
                 />
               </div>
 
+              {/* Description Input */}
               <div className="form-control">
-                <div className="py-2">Description</div>
+                <div className="py-2 font-semibold">Description</div>
                 <input
                   type="text"
                   placeholder="Description"
-                  defaultValue={singleTasks.description}
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
                   className="input input-bordered"
                   name="description"
+                  required
                 />
               </div>
 
+              {/* Category Selector */}
               <div className="form-control">
-                <div className="py-2">Your Category</div>
+                <div className="py-2 font-semibold">Category</div>
                 <select
                   className="select select-bordered w-full max-w-xs"
-                  value={category} // Set default value here
+                  value={category}
                   onChange={(e) => setCategory(e.target.value)}
+                  required
                 >
                   <option value="">Select Category</option>
                   <option value="To Do">To Do</option>
@@ -77,6 +91,7 @@ const UpdateModal = ({ singleTasks }) => {
                 </select>
               </div>
 
+              {/* Submit Button */}
               <div className="form-control mt-6">
                 <button type="submit" className="btn btn-primary">
                   Update Task
@@ -85,6 +100,7 @@ const UpdateModal = ({ singleTasks }) => {
             </form>
           </div>
 
+          {/* Close Modal Button */}
           <div className="modal-action">
             <form method="dialog">
               <button className="btn">Close</button>

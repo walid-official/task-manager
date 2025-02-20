@@ -1,11 +1,20 @@
 import React from "react";
-import AddTaskModal from "../AddTaskModal/AddTaskModal";
-import Tasks from "./../Tasks/Tasks";
+import AddTaskModal from './../AddTaskModal/AddTaskModal';
+import Tasks from './../Tasks/Tasks';
 
 const AddTask = () => {
+  const tasksRef = React.useRef();
+
   const handleAddTaskModal = () => {
     document.getElementById("my_modal_1").showModal();
   };
+
+  const refetchTasks = () => {
+    if (tasksRef.current) {
+      tasksRef.current.refetchAllTasks();
+    }
+  };
+
   return (
     <div className="w-11/12 mx-auto my-10">
       <div className="flex justify-center">
@@ -13,9 +22,9 @@ const AddTask = () => {
           Add Task +
         </button>
       </div>
-      <AddTaskModal></AddTaskModal>
+      <AddTaskModal refetchTasks={refetchTasks} />
       <div className="mt-10">
-        <Tasks></Tasks>
+        <Tasks ref={tasksRef} />
       </div>
     </div>
   );

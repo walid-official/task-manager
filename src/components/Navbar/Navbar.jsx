@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Link, NavLink, useNavigate } from "react-router";
-import { auth } from "../../firebase/firebase.init";
+import { NavLink, useNavigate } from "react-router";
 import { AuthContext } from "../Authprovider/Authprovider";
 import axios from "axios";
 
