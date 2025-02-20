@@ -1,12 +1,11 @@
 import React from 'react';
 import AddTask from '../components/AddTask/AddTask';
-import Tasks from '../components/Tasks/Tasks';
+import Hero from '../components/Hero/Hero';
 
 const Home = () => {
     return (
         <div>
-            <AddTask></AddTask>
-            <Tasks></Tasks>
+            <Hero></Hero>        
         </div>
     );
 };
