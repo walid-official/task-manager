@@ -2,8 +2,8 @@ import React from "react";
 
 const Hero = () => {
   return (
-    <div className="bg-base-200">
-      <div className="flex justify-between items-center w-11/12 mx-auto min-h-screen">
+    <div className="bg-base-200 px-24">
+      <div className="flex justify-between items-center  min-h-screen">
         <div className="w-[50%]">
           <div className="text-center lg:text-left">
             <h1 className="text-5xl font-bold">PlanMate Pro</h1>
@@ -16,9 +16,9 @@ const Hero = () => {
             </p>
           </div>
         </div>
-        <div className="w-[50%]">
+        <div className="w-[50%] flex justify-end">
           <img
-            className="w-full"
+            className="w-[70%] "
             src="https://cdn3d.iconscout.com/3d/premium/thumb/organizing-project-3d-illustration-download-in-png-blend-fbx-gltf-file-formats--business-management-task-work-schedule-organising-pack-illustrations-10137608.png?f=webp"
             alt=""
           />
