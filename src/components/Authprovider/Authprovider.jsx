@@ -8,7 +8,7 @@ import { createContext, useEffect, useState } from "react";
 import { auth } from "../../firebase/firebase.init";
 
 export const AuthContext = createContext();
-const AuthProvider = ({ children }) => {
+const Authprovider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -50,4 +50,4 @@ const AuthProvider = ({ children }) => {
   );
 };
 
-export default AuthProvider;
+export default Authprovider;

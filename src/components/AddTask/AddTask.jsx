@@ -16,7 +16,7 @@ const AddTask = () => {
   };
 
   return (
-    <div className="w-11/12 mx-auto my-10">
+    <div className="lg:px-24 md:px-10 px-4 my-10">
       <div className="flex justify-center">
         <button onClick={handleAddTaskModal} className="btn">
           Add Task +

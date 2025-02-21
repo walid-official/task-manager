@@ -26,7 +26,7 @@ const Navbar = () => {
           name: result?.user?.displayName,
         };
         try {
-          axios.post("http://localhost:5000/users", userData).then(({ data }) => {
+          axios.post("https://task-manager-server-ten-theta.vercel.app/users", userData).then(({ data }) => {
             console.log(data);
           });
         } catch (err) {
@@ -71,7 +71,7 @@ const Navbar = () => {
   );
 
   return (
-    <div className="bg-gray-200 lg:px-24 px-10 shadow-md">
+    <div className="bg-gray-200 lg:px-24 md:px-10 px-4 shadow-md">
       <div className="navbar flex justify-between items-center py-4">
         {/* 🚀 Logo */}
         <h2 className="text-2xl font-bold">PlanMate Pro</h2>
@@ -87,7 +87,7 @@ const Navbar = () => {
 
       {/* 📲 Mobile Menu Dropdown */}
       {isMenuOpen && (
-        <div className="lg:hidden bg-gray-100 rounded-md shadow-md py-4 space-y-4 px-6">
+        <div className="lg:hidden bg-gray-100 rounded-md shadow-md py-8 mb-4 space-y-4 space-x-4 px-6">
           {Links}
         </div>
       )}

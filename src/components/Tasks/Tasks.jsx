@@ -1,19 +1,29 @@
-import React, { useEffect, useState, forwardRef, useImperativeHandle, useContext } from "react";
+import React, {
+  useEffect,
+  useState,
+  forwardRef,
+  useImperativeHandle,
+  useContext,
+} from "react";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import { MdDelete, MdEdit } from "react-icons/md";
 import UpdateModal from "../UpdateModal/UpdateModal";
-import { AuthContext } from "../AuthProvider/AuthProvider";
+import { AuthContext } from "../Authprovider/Authprovider";
 
 const Tasks = forwardRef((props, ref) => {
   const [toDoTasks, setToDoTasks] = useState([]);
   const [inProgressTasks, setInProgressTasks] = useState([]);
   const [doneTasks, setDoneTasks] = useState([]);
   const [singleTasks, setSingleTasks] = useState([]);
-  const {user} = useContext(AuthContext)
+  const { user } = useContext(AuthContext);
   // Fetch tasks based on category
   const fetchTasks = async (category, setTasks) => {
     try {
-      const response = await fetch(`http://localhost:5000/categoryTasks?category=${encodeURIComponent(category)}&email=${user?.email}`);
+      const response = await fetch(
+        `https://task-manager-server-ten-theta.vercel.app/tasks?category=${encodeURIComponent(
+          category
+        )}&email=${user?.email}`
+      );
       const data = await response.json();
       setTasks(data);
     } catch (error) {
@@ -42,14 +52,17 @@ const Tasks = forwardRef((props, ref) => {
 
     if (!destination) return;
 
-    if (source.droppableId === destination.droppableId && source.index === destination.index) {
+    if (
+      source.droppableId === destination.droppableId &&
+      source.index === destination.index
+    ) {
       return;
     }
 
     const lists = {
       "To Do": { tasks: toDoTasks, setTasks: setToDoTasks },
       "In Progress": { tasks: inProgressTasks, setTasks: setInProgressTasks },
-      "Done": { tasks: doneTasks, setTasks: setDoneTasks },
+      Done: { tasks: doneTasks, setTasks: setDoneTasks },
     };
 
     const sourceList = lists[source.droppableId];
@@ -71,11 +84,14 @@ const Tasks = forwardRef((props, ref) => {
   // Update task category
   const updateTaskCategory = async (taskId, newCategory) => {
     try {
-      await fetch(`http://localhost:5000/tasks/${taskId}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ category: newCategory }),
-      });
+      await fetch(
+        `https://task-manager-server-ten-theta.vercel.app/tasks/${taskId}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ category: newCategory }),
+        }
+      );
     } catch (error) {
       console.error("Error updating task category:", error);
     }
@@ -84,9 +100,12 @@ const Tasks = forwardRef((props, ref) => {
   // Delete task
   const deleteTask = async (taskId, category) => {
     try {
-      await fetch(`http://localhost:5000/tasks/${taskId}`, {
-        method: "DELETE",
-      });
+      await fetch(
+        `https://task-manager-server-ten-theta.vercel.app/tasks/${taskId}`,
+        {
+          method: "DELETE",
+        }
+      );
 
       const listMap = {
         "To Do": [toDoTasks, setToDoTasks],
@@ -105,7 +124,9 @@ const Tasks = forwardRef((props, ref) => {
   const handleUpdateTaskModal = async (singleTaskId) => {
     document.getElementById("my_modal_2").showModal();
     try {
-      const response = await fetch(`http://localhost:5000/singleTasks/${singleTaskId}`);
+      const response = await fetch(
+        `https://task-manager-server-ten-theta.vercel.app/singleTasks/${singleTaskId}`
+      );
       const data = await response.json();
       setSingleTasks({ ...data, singleTaskId });
     } catch (err) {
@@ -130,16 +151,20 @@ const Tasks = forwardRef((props, ref) => {
                   ref={provided.innerRef}
                   {...provided.draggableProps}
                   {...provided.dragHandleProps}
-                  className={`p-4 rounded-md bg-white text-black my-3 shadow-md ${snapshot.isDragging ? "bg-blue-100" : ""}`}
+                  className={`p-4 rounded-md bg-white text-black my-3 shadow-md ${
+                    snapshot.isDragging ? "bg-blue-100" : ""
+                  }`}
                 >
-                  <div className="flex justify-between items-center">
-                    <div className="flex gap-3.5 items-center">
-                      <h2 className="text-xl font-semibold">{task.title}</h2>
-                      <p className="text-sm text-gray-500">
+                  <div className="flex justify-between ">
+                    <div className="lg:flex gap-3.5 items-center">
+                      <h2 className="md:text-xl md:font-semibold text-[17px] font-bold">
+                        {task.title}
+                      </h2>
+                      <p className="text-sm text-gray-500 pt-2 lg:pt-0">
                         {new Date(task.timestamp).toLocaleString()}
                       </p>
                     </div>
-                    <div className="space-x-3">
+                    <div className="md:space-x-3 space-x-1">
                       <button
                         onClick={() => handleUpdateTaskModal(task._id)}
                         className="text-xl cursor-pointer"
@@ -166,18 +191,22 @@ const Tasks = forwardRef((props, ref) => {
   );
 
   return (
-    <div className="w-11/12 mx-auto">
+    <div className="">
       <DragDropContext onDragEnd={onDragEnd}>
-        <div className="grid md:grid-cols-2 gap-6">
-          {renderTaskList(toDoTasks, "To Do")}
-          {renderTaskList(inProgressTasks, "In Progress")}
-          {renderTaskList(doneTasks, "Done")}
+        <div className="">
+          <div className="lg:flex justify-between gap-4">
+            <div className="lg:w-[50%] md:w-[70%] mx-auto">{renderTaskList(toDoTasks, "To Do")}</div>
+            <div className="lg:w-[50%] md:w-[70%] mx-auto mt-4 lg:mt-0">{renderTaskList(inProgressTasks, "In Progress")}</div>
+            
+          </div>
+          <div className="lg:flex justify-center mt-4">
+            <div className="lg:w-[50%] md:w-[70%] mx-auto">
+              {renderTaskList(doneTasks, "Done")}
+            </div>
+          </div>
         </div>
       </DragDropContext>
-      <UpdateModal
-        singleTasks={singleTasks}
-        refetchTasks={refetchAllTasks}
-      />
+      <UpdateModal singleTasks={singleTasks} refetchTasks={refetchAllTasks} />
     </div>
   );
 });

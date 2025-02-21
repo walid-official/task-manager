@@ -24,7 +24,7 @@ const UpdateModal = ({ singleTasks, refetchTasks }) => {
 
     try {
       const { data } = await axios.patch(
-        `http://localhost:5000/updateTasks/${singleTasks.singleTaskId}`,
+        `https://task-manager-server-ten-theta.vercel.app/updateTasks/${singleTasks.singleTaskId}`,
         updateData
       );
       console.log("✅ Task updated:", data);

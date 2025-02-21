@@ -2,11 +2,11 @@ import React from "react";
 
 const Hero = () => {
   return (
-    <div className="bg-base-200 lg:px-24 px-10">
+    <div className="bg-base-200 lg:px-24 md:px-10 px-4">
       <div className="lg:flex justify-between items-center  min-h-screen">
         <div className="lg:w-[50%]">
           <div className="text-center pt-8 lg:pt-0 lg:text-left">
-            <h1 className="text-5xl font-bold">PlanMate Pro</h1>
+            <h1 className="lg:text-5xl md:text-4xl text-3xl font-bold">PlanMate Pro</h1>
             <p className="py-6">
               PlanMate Pro is a sleek and intuitive task management app designed
               to help you organize, prioritize, and conquer your daily goals.
