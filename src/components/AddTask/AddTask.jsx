@@ -18,7 +18,7 @@ const AddTask = () => {
   return (
     <div className="lg:px-24 md:px-10 px-4 my-10">
       <div className="flex justify-center">
-        <button onClick={handleAddTaskModal} className="btn">
+        <button onClick={handleAddTaskModal} className="bg-gradient-to-r from-[#007bff] to-[#007bff] px-8 py-3 rounded-full cursor-pointer text-white text-xl font-medium">
           Add Task +
         </button>
       </div>

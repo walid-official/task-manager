@@ -1,6 +1,31 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,100..900;1,100..900&display=swap');
 @import "tailwindcss";
 @plugin "daisyui";
 
-body,html{
-    overflow-x: hidden;
+
+
+.hero-font {
+    font-family: "Noto Serif", serif;
 }
+
+.underline-highlight {
+    position: relative;
+  }
+  
+  .underline-highlight::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 10px; /* Underline thickness */
+    background: linear-gradient(90deg, #007bff, #00d4ff); /* Gradient effect */
+    border-radius: 9999px; /* Smooth curve */
+    transform: translateY(6px);
+    transition: width 0.3s ease-in-out;
+  }
+  
+
+  
+  
+  

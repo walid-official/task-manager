@@ -141,7 +141,7 @@ const Tasks = forwardRef((props, ref) => {
         <div
           ref={provided.innerRef}
           {...provided.droppableProps}
-          className="bg-gray-200 min-h-[400px] p-4 rounded-lg"
+          className="bg-gray-100 min-h-[400px] p-4 rounded-lg"
         >
           <div className="font-bold text-center text-3xl py-2">{title}</div>
           {tasks.map((task, index) => (
@@ -156,11 +156,11 @@ const Tasks = forwardRef((props, ref) => {
                   }`}
                 >
                   <div className="flex justify-between ">
-                    <div className="lg:flex gap-3.5 items-center">
+                    <div className="">
                       <h2 className="md:text-xl md:font-semibold text-[17px] font-bold">
                         {task.title}
                       </h2>
-                      <p className="text-sm text-gray-500 pt-2 lg:pt-0">
+                      <p className="text-sm py-1 text-gray-500">
                         {new Date(task.timestamp).toLocaleString()}
                       </p>
                     </div>
@@ -172,14 +172,14 @@ const Tasks = forwardRef((props, ref) => {
                         <MdEdit />
                       </button>
                       <button
-                        className="text-xl cursor-pointer text-red-500"
+                        className="text-xl cursor-pointer text-[#007bff]"
                         onClick={() => deleteTask(task._id, task.category)}
                       >
                         <MdDelete />
                       </button>
                     </div>
                   </div>
-                  <p className="py-2">{task.description}</p>
+                  <p className="">{task.description}</p>
                 </div>
               )}
             </Draggable>
@@ -193,17 +193,10 @@ const Tasks = forwardRef((props, ref) => {
   return (
     <div className="">
       <DragDropContext onDragEnd={onDragEnd}>
-        <div className="">
-          <div className="lg:flex justify-between gap-4">
-            <div className="lg:w-[50%] md:w-[70%] mx-auto">{renderTaskList(toDoTasks, "To Do")}</div>
-            <div className="lg:w-[50%] md:w-[70%] mx-auto mt-4 lg:mt-0">{renderTaskList(inProgressTasks, "In Progress")}</div>
-            
-          </div>
-          <div className="lg:flex justify-center mt-4">
-            <div className="lg:w-[50%] md:w-[70%] mx-auto">
-              {renderTaskList(doneTasks, "Done")}
-            </div>
-          </div>
+        <div className="grid xl:grid-cols-3 md:grid-cols-2 gap-4">
+          {renderTaskList(toDoTasks, "To Do")}
+          {renderTaskList(inProgressTasks, "In Progress")}
+          {renderTaskList(doneTasks, "Done")}
         </div>
       </DragDropContext>
       <UpdateModal singleTasks={singleTasks} refetchTasks={refetchAllTasks} />

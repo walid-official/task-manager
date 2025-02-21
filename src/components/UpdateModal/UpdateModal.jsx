@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
+import { FaTimes } from "react-icons/fa";
 
 const UpdateModal = ({ singleTasks, refetchTasks }) => {
   const [category, setCategory] = useState(singleTasks.category || "");
@@ -42,7 +43,15 @@ const UpdateModal = ({ singleTasks, refetchTasks }) => {
   return (
     <div>
       <dialog id="my_modal_2" className="modal">
-        <div className="modal-box">
+        <div className="modal-box relative">
+          {/* Close button */}
+          <button
+            className="btn btn-sm btn-circle absolute right-2 top-2"
+            onClick={() => document.getElementById("my_modal_2").close()}
+          >
+            <FaTimes />
+          </button>
+
           <h2 className="text-xl font-bold text-center mb-4">Update Task</h2>
 
           <div className="card">
@@ -93,17 +102,10 @@ const UpdateModal = ({ singleTasks, refetchTasks }) => {
 
               {/* Submit Button */}
               <div className="form-control mt-6">
-                <button type="submit" className="btn btn-primary">
+                <button type="submit" className="bg-gradient-to-r from-[#007bff] to-[#007bff] px-8 py-3 rounded-full cursor-pointer text-white text-[16px] font-medium">
                   Update Task
                 </button>
               </div>
-            </form>
-          </div>
-
-          {/* Close Modal Button */}
-          <div className="modal-action">
-            <form method="dialog">
-              <button className="btn">Close</button>
             </form>
           </div>
         </div>
