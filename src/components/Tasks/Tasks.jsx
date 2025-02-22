@@ -26,6 +26,7 @@ const Tasks = forwardRef((props, ref) => {
       );
       const data = await response.json();
       setTasks(data);
+      console.log(data);
     } catch (error) {
       console.error(`Error fetching ${category} tasks:`, error);
     }
@@ -160,7 +161,8 @@ const Tasks = forwardRef((props, ref) => {
                       <h2 className="md:text-xl md:font-semibold text-[17px] font-bold">
                         {task.title}
                       </h2>
-                      <p className="text-sm py-1 text-gray-500">
+                      
+                      <p className={`text-sm py-1 ${task.category === "Done" && "text-green-400"} ${task.category === "To Do" && "text-gray-400"} ${task.category === "In Progress" && "text-[#FFC107]"}`}>
                         {new Date(task.timestamp).toLocaleString()}
                       </p>
                     </div>

@@ -36,10 +36,8 @@ const Hero = () => {
               </span>
             </h1>
             <div className="pb-10 pt-12">
-              <p className="lg:text-[22px] md:text-[20px] lg:w-[50%] md:w-[60%] w-[90%] mx-auto text-center text-gray-400 ">
-                Organize tasks, projects, and teamwork in one place. Trusted by
-                40M+ users, my app simplifies task management with To Do, In
-                Progress, and Done.
+              <p className="lg:text-[22px] md:text-[20px] lg:w-[55%] md:w-[70%] w-[90%] mx-auto text-center text-gray-400 ">
+              This is my app that streamlines task management with To Do, In Progress, and Done boards, featuring drag-and-drop, plus quick update and delete options for efficient workflow control.
               </p>
             </div>
             <div className="flex justify-center">
