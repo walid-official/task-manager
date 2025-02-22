@@ -27,9 +27,9 @@ const Hero = () => {
           ? "backdrop-blur-xl bg-white/30"
           : "dark:bg-gray-900 dark:text-white"
       }`}>
-        <div className="lg:flex justify-center items-center py-[88px]">
+        <div className="flex justify-center items-center min-h-[88vh]">
           <div className="">
-            <h1 className="lg:text-7xl hero-font md:text-5xl text-center text-3xl font-bold">
+            <h1 className="xl:text-7xl lg:text-6xl hero-font md:text-5xl sm:text-4xl text-center text-[32px] font-bold">
               A simple task list <br />
               <span className="relative inline-block">
                 to <span className="underline-highlight">manage it all</span>

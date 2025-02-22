@@ -61,7 +61,7 @@ const Navbar = () => {
       {user && (
         <NavLink
           to="/hero"
-          className="font-semibold"
+          className="font-semibold block sm:flex"
           onClick={() => setIsMenuOpen(false)}
         >
           Home
@@ -71,7 +71,7 @@ const Navbar = () => {
       {user && (
         <NavLink
           to="/add-task"
-          className="font-semibold"
+          className="font-semibold block sm:flex"
           onClick={() => setIsMenuOpen(false)}
         >
           Add Task
@@ -174,7 +174,7 @@ const Navbar = () => {
 
       {/* 📲 Mobile Menu Dropdown */}
       {isMenuOpen && (
-        <div className="lg:hidden bg-gray-100 rounded-md shadow-md py-8 mb-4 space-y-4 space-x-4 px-6">
+        <div className="lg:hidden bg-gray-100 text-black rounded-md shadow-md py-8 pb-4 space-y-4 space-x-4 px-6">
           {Links}
         </div>
       )}

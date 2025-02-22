@@ -174,7 +174,7 @@ const Tasks = forwardRef((props, ref) => {
                         <MdEdit />
                       </button>
                       <button
-                        className="text-xl cursor-pointer text-[#007bff]"
+                        className="text-xl cursor-pointer text-[#000]"
                         onClick={() => deleteTask(task._id, task.category)}
                       >
                         <MdDelete />
