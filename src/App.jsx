@@ -5,6 +5,7 @@ import Home from "./pages/Home";
 import Hero from "./components/Hero/Hero";
 import AddTask from "./components/AddTask/AddTask";
 import PrivetRouter from "./components/PrivetRouter/PrivetRouter";
+import ErrorPage from "./pages/ErrorPage";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           ></Route>
           <Route path="login" element={<Login></Login>}></Route>
         </Route>
+        <Route path="*" element={<ErrorPage></ErrorPage>}></Route>
       </Routes>
     </>
   );
