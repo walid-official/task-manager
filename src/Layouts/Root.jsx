@@ -4,7 +4,7 @@ import { Outlet } from 'react-router';
 
 const Root = () => {
     return (
-        <div>
+        <div className='min-h-screen'>
             <Navbar></Navbar>
             <Outlet></Outlet>
         </div>
